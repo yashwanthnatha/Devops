@@ -1,26 +1,32 @@
-pipeline {
+```pipeline {
     agent any
-
+    
     stages {
-        stage('Clone Repository') {
+        stage('Git Clone') {
             steps {
                 git 'https://github.com/yashwanthnatha/Devops.git'
             }
         }
-
+        
+        stage('Compile') {
+            steps {
+                sh 'javac -d target/classes main/*/.java'
+            }
+        }
+        
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean install'
             }
         }
     }
-
+    
     post {
         success {
-            echo 'Build and compilation successful!'
+            echo 'Pipeline succeeded!'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Pipeline failed!'
         }
     }
 }
